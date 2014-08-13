@@ -28,7 +28,7 @@ proguard-project.txt
 
 ## type of files to be ignored ##
 *~
-
+android-support-v4.jar
 R.java
 project.properties
 lint.xml
