@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -163,14 +164,16 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		tabView.setOnClickListener(mTabClickListener);
 		tabView.setText(text);
 		tabView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-
+		tabView.setSingleLine();
+		
+		tabView.setEllipsize(TruncateAt.MARQUEE);
 		int dp12 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				12, getContext().getResources().getDisplayMetrics());
 		int dp48 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				48, getContext().getResources().getDisplayMetrics());
-
+		
 		LinearLayout.LayoutParams tabViewParams = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT, dp48, 1);
+				LinearLayout.LayoutParams.WRAP_CONTENT, dp48);
 		tabViewParams.gravity = Gravity.CENTER;
 		tabView.setGravity(Gravity.CENTER);
 		tabView.setPadding(dp48, 0, dp48, 0);
