@@ -113,6 +113,9 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		} else {
 			mMaxTabWidth = -1;
 		}
+		
+		// as per new TinyOwl specs, maxTabWidth should not be considered
+		mMaxTabWidth = -1;
 
 		final int oldWidth = getMeasuredWidth();
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
