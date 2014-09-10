@@ -168,11 +168,11 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		tabView.setFocusable(true);
 		tabView.setOnClickListener(mTabClickListener);
 		tabView.setText(text);
-
+		tabView.mTextView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 		int dp48 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				48, getContext().getResources().getDisplayMetrics());
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT, dp48);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				tabView.mTextView.getMeasuredWidth(), MATCH_PARENT);
 		mTabLayout.addView(tabView, layoutParams);
 	}
 
@@ -230,9 +230,6 @@ public class TabPageIndicator extends HorizontalScrollView implements
 				title = EMPTY_TITLE;
 			}
 			int iconResId = 0;
-			if (iconAdapter != null) {
-				iconResId = iconAdapter.getIconResId(i);
-			}
 			addTab(i, title, iconResId);
 		}
 		if (mSelectedTabIndex > count) {
@@ -240,6 +237,7 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		}
 		setCurrentItem(mSelectedTabIndex);
 		requestLayout();
+		
 	}
 
 	@Override
