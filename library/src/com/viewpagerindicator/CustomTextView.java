@@ -7,11 +7,11 @@ import android.widget.TextView;
 
 public class CustomTextView extends TextView {
 
-	private static String DEBUG_TAG = "CustomTextView";
 	private int mTextCase = 0;
 
 	public CustomTextView(Context context) {
 		super(context);
+		setTextStyle(context, null);
 	}
 
 	public CustomTextView(Context context, AttributeSet attrs) {

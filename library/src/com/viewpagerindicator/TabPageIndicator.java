@@ -19,7 +19,6 @@ package com.viewpagerindicator;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -27,10 +26,13 @@ import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * This widget implements the dynamic action bar tab behavior that can change
@@ -113,7 +115,7 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		} else {
 			mMaxTabWidth = -1;
 		}
-		
+
 		// as per new TinyOwl specs, maxTabWidth should not be considered
 		mMaxTabWidth = -1;
 
@@ -166,21 +168,12 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		tabView.setFocusable(true);
 		tabView.setOnClickListener(mTabClickListener);
 		tabView.setText(text);
-		tabView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-		tabView.setSingleLine();
-		
-		tabView.setEllipsize(TruncateAt.MARQUEE);
-		int dp12 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-				12, getContext().getResources().getDisplayMetrics());
+
 		int dp48 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				48, getContext().getResources().getDisplayMetrics());
-		
-		LinearLayout.LayoutParams tabViewParams = new LinearLayout.LayoutParams(
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT, dp48);
-		tabViewParams.gravity = Gravity.CENTER;
-		tabView.setGravity(Gravity.CENTER);
-		tabView.setPadding(dp48, 0, dp48, 0);
-		mTabLayout.addView(tabView, tabViewParams);
+		mTabLayout.addView(tabView, layoutParams);
 	}
 
 	@Override
@@ -279,36 +272,37 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		mListener = listener;
 	}
 
-	private class TabView extends CustomTextView {
+	public class TabView extends RelativeLayout {
 		private int mIndex;
 		private static final int TEXTCOLOR_DESELECTED = 0xff404040;
 		private static final int TEXTCOLOR_SELECTED = 0xff00a5e6;
+		private TextView mTextView;
+		private View mUnderlineView;
 
 		public TabView(Context context) {
-			super(context, null, R.attr.vpiTabPageIndicatorStyle);
-		}
-
-		@Override
-		public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-			// Re-measure if we went beyond our maximum size.
-			if (mMaxTabWidth > 0 && getMeasuredWidth() > mMaxTabWidth) {
-				super.onMeasure(MeasureSpec.makeMeasureSpec(mMaxTabWidth,
-						MeasureSpec.EXACTLY), heightMeasureSpec);
-			}
+			super(context);
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			inflater.inflate(R.layout.custom_tab_view, this, true);
+			mTextView = (TextView) findViewById(R.id.text_box);
+			mUnderlineView = findViewById(R.id.underline);
 		}
 
 		@Override
 		public void setSelected(boolean selected) {
 			super.setSelected(selected);
 			setTextColor(selected ? TEXTCOLOR_SELECTED : TEXTCOLOR_DESELECTED);
-			setBackgroundResource(selected ? R.drawable.background_selected_tab
-					: R.drawable.background_deselected_tab);
-			int dp12 = (int) TypedValue.applyDimension(
-					TypedValue.COMPLEX_UNIT_DIP, 12, getContext()
-							.getResources().getDisplayMetrics());
-			setPadding(dp12, 0, dp12, 0);
+			mUnderlineView.setVisibility(selected ? View.VISIBLE
+					: View.INVISIBLE);
+
+		}
+
+		public void setText(CharSequence text) {
+			mTextView.setText(text);
+		}
+
+		public void setTextColor(int color) {
+			mTextView.setTextColor(color);
 		}
 
 		public int getIndex() {
