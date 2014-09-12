@@ -22,10 +22,8 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,37 +96,6 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		mTabReselectedListener = listener;
 	}
 
-	@Override
-	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-		final boolean lockedExpanded = widthMode == MeasureSpec.EXACTLY;
-		setFillViewport(lockedExpanded);
-
-		final int childCount = mTabLayout.getChildCount();
-		if (childCount > 1
-				&& (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST)) {
-			if (childCount > 2) {
-				mMaxTabWidth = (int) (MeasureSpec.getSize(widthMeasureSpec) * 0.4f);
-			} else {
-				mMaxTabWidth = MeasureSpec.getSize(widthMeasureSpec) / 2;
-			}
-		} else {
-			mMaxTabWidth = -1;
-		}
-
-		// as per new TinyOwl specs, maxTabWidth should not be considered
-		mMaxTabWidth = -1;
-
-		final int oldWidth = getMeasuredWidth();
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		final int newWidth = getMeasuredWidth();
-
-		if (lockedExpanded && oldWidth != newWidth) {
-			// Recenter the tab display if we're at a new (scrollable) size.
-			setCurrentItem(mSelectedTabIndex);
-		}
-	}
-
 	private void animateToTab(final int position) {
 		final View tabView = mTabLayout.getChildAt(position);
 		if (mTabSelector != null) {
@@ -168,7 +135,8 @@ public class TabPageIndicator extends HorizontalScrollView implements
 		tabView.setFocusable(true);
 		tabView.setOnClickListener(mTabClickListener);
 		tabView.setText(text);
-		tabView.mTextView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+		tabView.mTextView.measure(MeasureSpec.UNSPECIFIED,
+				MeasureSpec.UNSPECIFIED);
 		int dp48 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
 				48, getContext().getResources().getDisplayMetrics());
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
