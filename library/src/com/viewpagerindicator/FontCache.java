@@ -7,13 +7,13 @@ import android.graphics.Typeface;
  * Helper class which loads and returns typeface
  * **/
 public class FontCache {
-	private static Typeface normal;
+	private static Typeface semiBold;
 
-	public static Typeface getNormalFont(Context context) {
-		if (normal == null) {
-			normal = Typeface.createFromAsset(context.getResources()
-					.getAssets(), "fonts/font_normal.otf");
+	public static Typeface getBoldFont(Context context) {
+		if (semiBold == null) {
+			semiBold = Typeface.createFromAsset(context.getResources()
+					.getAssets(), "fonts/font_bold.otf");
 		}
-		return normal;
+		return semiBold;
 	}
 }

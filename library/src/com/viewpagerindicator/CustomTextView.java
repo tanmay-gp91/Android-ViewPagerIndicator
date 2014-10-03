@@ -25,14 +25,14 @@ public class CustomTextView extends TextView {
 	}
 
 	public void setDefaultFont() {
-		setTypeface(getNormalFont());
+		setTypeface(getBoldFont());
 	}
 
 	private void setTextStyle(Context context, AttributeSet attrs) {
-		setTypeface(getNormalFont());
+		setTypeface(getBoldFont());
 	}
 
-	private Typeface getNormalFont() {
-		return FontCache.getNormalFont(getContext());
+	private Typeface getBoldFont() {
+		return FontCache.getBoldFont(getContext());
 	}
 }
