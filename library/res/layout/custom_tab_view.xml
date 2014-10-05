@@ -15,7 +15,7 @@
         android:singleLine="true"
         android:text="Category"
         android:textColor="@color/app_key_color"
-        android:textSize="14sp" />
+        android:textSize="17sp" />
 
     <View
         android:id="@id/underline"
