@@ -5,7 +5,7 @@
     android:background="@color/app_background_gray"
      >
 
-    <com.viewpagerindicator.CustomTextView
+    <TextView
         android:id="@+id/text_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
